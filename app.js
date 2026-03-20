@@ -1,5 +1,5 @@
 /* ============================================
-   app.js — Interactivity for Adwaith's Portfolio
+   app.js — Adwaith's Portfolio
    ============================================ */
 
 (function () {
@@ -40,7 +40,6 @@
     });
 
     function animateCursor() {
-      // Smooth follow with lerp
       cursorX += (mouseX - cursorX) * 0.15;
       cursorY += (mouseY - cursorY) * 0.15;
       cursor.style.left = cursorX + 'px';
@@ -50,70 +49,11 @@
     animateCursor();
 
     // Hover effect on interactive elements
-    const hoverTargets = document.querySelectorAll('a, button, .project-card, .skill-chip');
+    const hoverTargets = document.querySelectorAll('a, button');
     hoverTargets.forEach((el) => {
       el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
   }
-
-  // --- Scroll Reveal (IntersectionObserver) ---
-  const revealElements = document.querySelectorAll('.reveal, .stagger');
-
-  if ('IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    );
-
-    revealElements.forEach((el) => revealObserver.observe(el));
-  } else {
-    // Fallback: show everything immediately
-    revealElements.forEach((el) => el.classList.add('visible'));
-  }
-
-  // --- Active Nav Tracking ---
-  const navLinks = document.querySelectorAll('.side-nav a');
-  const sections = document.querySelectorAll('section[id]');
-
-  if ('IntersectionObserver' in window) {
-    const navObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            navLinks.forEach((link) => {
-              link.classList.remove('active');
-              if (link.getAttribute('href') === '#' + id) {
-                link.classList.add('active');
-              }
-            });
-          }
-        });
-      },
-      { threshold: 0.3, rootMargin: '-10% 0px -60% 0px' }
-    );
-
-    sections.forEach((section) => navObserver.observe(section));
-  }
-
-  // --- Smooth scroll for nav links ---
-  navLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = link.getAttribute('href');
-      const target = document.querySelector(targetId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
 
 })();

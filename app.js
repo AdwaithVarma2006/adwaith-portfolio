@@ -56,4 +56,21 @@
     });
   }
 
+  // --- Live X Follower Count ---
+  (async function fetchFollowers() {
+    const el = document.getElementById('followerCount');
+    if (!el) return;
+    try {
+      const res = await fetch('https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=TheAdwaithVarma');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data[0] && data[0].followers_count) {
+          el.textContent = Number(data[0].followers_count).toLocaleString();
+        }
+      }
+    } catch (e) {
+      // Keep static fallback count
+    }
+  })();
+
 })();
